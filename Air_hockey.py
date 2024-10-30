@@ -7,6 +7,10 @@ wn.bgcolor("Black")
 wn.setup(width=800, height=600)
 wn.tracer(0)  #prevent the window from updating
 
+
+score_player1=0
+score_player2=0
+
 #Player 1 paddle
 paddle1= turtle.Turtle()
 paddle1.speed(0) #Set max speed for the animation
@@ -38,6 +42,16 @@ puck.shapesize(stretch_len=1.2, stretch_wid=1.2)
 puck.penup()
 puck.goto(0,0)
 
+#Scoring Ability and score tracking
+pen= turtle.Turtle()
+pen.speed(0)
+pen.color("white")
+pen.penup()
+pen.hideturtle()
+pen.goto(0,260)
+pen.write("Player1 : 0   |   Player2 : 0", align="center", font=("Times New Roman", 20 ,"normal"))
+
+ 
 #Hockey Puck movement
 puck.dx = 0.1
 puck.dy = -0.1
@@ -97,8 +111,27 @@ while True:
     if puck.xcor() > 390:
         puck.goto(0,0)
         puck.dx *= -1
+        score_player1 += 1  #Adds a goal to player 1's score
+        pen.clear()
+        pen.write("Player1 : {}  |   Player2 : {}".format(score_player1,score_player2), align="center", font=("Times New Roman", 20 ,"normal"))
+
 
     #Player 2 goal
     if puck.xcor() <-390:
         puck.goto(0,0)
+        puck.dx *= -1
+        score_player2 += 1 #Adds a goal to player 2's score
+        pen.clear()
+        pen.write("Player1 : {}  |   Player2 : {}".format(score_player1,score_player2), align="center", font=("Times New Roman", 20 ,"normal"))
+
+
+    #Paddle physics
+    #Player 1 Paddle
+    if (puck.xcor() < -340 and puck.xcor() > -350) and (puck.ycor()< paddle1.ycor() + 50 and puck.ycor() > paddle1.ycor()-50):
+        puck.setx(-340)
+        puck.dx *= -1 
+
+    #Player 2 Paddle
+    if (puck.xcor() > 340 and puck.xcor() < 350) and (puck.ycor() < paddle2.ycor() + 50 and puck.ycor() > paddle2.ycor()-50):
+        puck.setx(340)
         puck.dx *= -1
